@@ -1,15 +1,18 @@
-import DataTable from 'react-data-table-component';
+import DataTable, { createTheme } from 'react-data-table-component';
 import { Link } from 'react-router';
 import { useEmployeeStore } from '../stores';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import '../styles/employeeList.css'
+import fakeEmployeesList from '../mock/fakesEmployees.json'
 
 
 const EmployeeList = () => {
     const [search, setSearch] = useState('');
+    const [employeeList, setEmployeeList] = useState([]);
 
     // Recup des données du store
     const { employees } = useEmployeeStore();
-    console.log("liste employee: ", employees)
+    console.info("liste employee: ", employees)
 
     const columns = [
         { name: 'First Name', selector: row => row.firstName, sortable: true },
@@ -23,8 +26,12 @@ const EmployeeList = () => {
         { name: 'Zip Code', selector: row => row.zip, sortable: true },
     ];
 
+    useEffect(()=> {
+        setEmployeeList(employees)
+    }, [])
+
     // Filtre les données du store
-    const filteredData = employees.filter(row =>
+    const filteredData = employeeList.filter(row =>
         Object.values(row)
             .join(' ')
             .toLowerCase()
@@ -33,13 +40,19 @@ const EmployeeList = () => {
 
     return (
         <div className="table-container">
-            <h2 style={{ textAlign: 'center' }}>Current Employees</h2>
-            <input
-                type="search"
-                placeholder="Rechercher"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-            />
+            <h2>Current Employees</h2>
+            <div className='search-container'>
+                <input
+                    type="search"
+                    placeholder="Rechercher"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                />
+
+                <button onClick={()=>setEmployeeList(fakeEmployeesList)}>
+                    Activate fake employee
+                </button>
+            </div>
             <DataTable
                 columns={columns}
                 data={filteredData}
@@ -48,7 +61,6 @@ const EmployeeList = () => {
                 highlightOnHover
                 defaultSortFieldId={1}
             />
-            <Link to='/'>Home</Link>
         </div>
     );
 };

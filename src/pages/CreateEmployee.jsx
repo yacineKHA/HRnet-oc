@@ -34,7 +34,7 @@ const schema = yup.object().shape({
     city: yup.string().min(2, 'Le champ city doit contenir au moins 2 caractères.').required('Champ requis.'),
     state: yup.string().min(2, 'Le champ state doit contenir au moins 2 caractères.').required("Champ requis."),
     zip: yup.string().min(2, 'Le code postal est obligatoire.').required('Champ requis.'),
-    department: yup.string().min(2, 'Le champ département doit contenir au moins 2 caractères.').required('Champ requis.'),
+    department: yup.string(). min(2, 'Le champ département doit contenir au moins 2 caractères.').required('Champ requis.'),
 });
 
 const CreateEmployee = () => {
@@ -63,11 +63,7 @@ const CreateEmployee = () => {
     return (
         <div className='app-main-container'>
             <Modale visible={visible} setVisibility={setVisible} content="Employee Created!" />
-            <div className="title">
-                <h1>HRnet</h1>
-            </div>
             <div className="content">
-                <Link to='/employee-list'>View Current Employees</Link>
                 <h2>Create Employee</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group">

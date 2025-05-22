@@ -15,4 +15,6 @@ html, body {
   overflow: auto;
   background-color: white;
   position: relative;
+  margin: 0;
 }
+

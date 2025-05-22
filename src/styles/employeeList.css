@@ -1,0 +1,24 @@
+option {
+    color: black !important;
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding: 0 25px 0 25px;
+}
+
+.table-container>h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #444;
+    text-align: center;
+}
