@@ -1,0 +1,31 @@
+.modale-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.555);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+}
+
+.modale-content {    
+    position: relative;
+    width: 500px;
+    padding: 10px;
+    border-radius: 7px;
+    background-color: white;
+    color: black;
+}
+
+.close-container {
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    border-radius: 50px;
+    background-color: black;
+    border: 0;
+    cursor: pointer;
+    height: 25px;
+    width: 26px;
+}
