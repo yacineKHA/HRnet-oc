@@ -9,6 +9,7 @@ const EmployeeList = () => {
 
     // Recup des données du store
     const { employees } = useEmployeeStore();
+    console.log("liste employee: ", employees)
 
     const columns = [
         { name: 'First Name', selector: row => row.firstName, sortable: true },

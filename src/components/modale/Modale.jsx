@@ -11,7 +11,6 @@ const Modale = ({ visible, setVisibility, content }) => {
                     X
                 </button>
             </div>
-
         </div>
     );
 };

@@ -7,12 +7,16 @@ import { useEmployeeStore } from '../stores';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import '../styles/createEmployee.css'
 
 const schema = yup.object().shape({
     firstName: yup.string().min(2, 'Le prénom doit contenir au moins 2 caractères.').required('Champ requis'),
     lastName: yup.string().min(2, 'Le nom doit contenir au moins 2 caractères.').required('Champ requis'),
     dateOfBirth: yup
         .date()
+        .transform((value, originalValue) => {
+            return originalValue === '' ? undefined : value;
+        })
         .required('La date de naissance est obligatoire.')
         .test('age', "L'employé doit avoir au moins 16 ans.", value => {
             if (!value) return false; // Verifie qu'il y a bien une valeur (date de naissance)
@@ -26,11 +30,11 @@ const schema = yup.object().shape({
             return age >= 16;
         }),
     startDate: yup.string().required('La date de début du contrat est obligatoire.'),
-    street: yup.string().required('La rue est obligatoire.'),
-    city: yup.string().required('La ville est obligatoire.'),
-    state: yup.string().required("L'état est obligatoire."),
-    zip: yup.string().min(2, 'Le code postal est obligatoire.').required('Le code postal est obligatoire.'),
-    department: yup.string().required('Le département est obligatoire.'),
+    street: yup.string().min(2, 'Le champ street doit contenir au moins 2 caractères.').required('Champ requis.'),
+    city: yup.string().min(2, 'Le champ city doit contenir au moins 2 caractères.').required('Champ requis.'),
+    state: yup.string().min(2, 'Le champ state doit contenir au moins 2 caractères.').required("Champ requis."),
+    zip: yup.string().min(2, 'Le code postal est obligatoire.').required('Champ requis.'),
+    department: yup.string().min(2, 'Le champ département doit contenir au moins 2 caractères.').required('Champ requis.'),
 });
 
 const CreateEmployee = () => {
@@ -47,8 +51,12 @@ const CreateEmployee = () => {
     });
 
     const onSubmit = (data) => {
+        const employee = {
+            ...data,
+            dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0], // reformat la date en string et bon format
+        };
         setVisible(true);
-        addEmployee(data);
+        addEmployee(employee);
         reset();
     };
 

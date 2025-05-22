@@ -10,3 +10,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  height: auto;
+  overflow: auto;
+  background-color: white;
+  position: relative;
+}
