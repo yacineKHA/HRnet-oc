@@ -27,11 +27,6 @@ const useEmployeeStore = create((set) => ({
             employees: [...state.employees, employee]
         })),
 
-    submitForm: () => {
-        const state = useEmployeeStore.getState();
-        console.log("Employee created:", state.formData);
-    },
-
     resetForm: () =>
         set({
             formData: {

@@ -1,5 +1,4 @@
-import DataTable, { createTheme } from 'react-data-table-component';
-import { Link } from 'react-router';
+import DataTable from 'react-data-table-component';
 import { useEmployeeStore } from '../stores';
 import { useEffect, useState } from 'react';
 import '../styles/employeeList.css'
@@ -12,7 +11,6 @@ const EmployeeList = () => {
 
     // Recup des données du store
     const { employees } = useEmployeeStore();
-    console.info("liste employee: ", employees)
 
     const columns = [
         { name: 'First Name', selector: row => row.firstName, sortable: true },
@@ -27,7 +25,7 @@ const EmployeeList = () => {
     ];
 
     useEffect(()=> {
-        setEmployeeList(employees)
+        setEmployeeList(fakeEmployeesList)
     }, [])
 
     // Filtre les données du store
@@ -54,6 +52,7 @@ const EmployeeList = () => {
                 </button>
             </div>
             <DataTable
+                className='table'
                 columns={columns}
                 data={filteredData}
                 pagination

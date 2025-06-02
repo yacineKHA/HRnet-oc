@@ -1,121 +1,96 @@
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import './formCreateEmployee.css';
+import departmentsList from '../../services/data/departments.json';
+import statesList from '../../services/data/states.json';
+import createEmployeeSchemaYup from '../../utils/createEmployeeSchemaYup';
 
-const FormCreateEmployee = ({}) => {
-
-    const schema = yup.object().shape({
-        firstName: yup.string().min(2, 'Minimum 2 caractères').required('Champ requis'),
-        lastName: yup.string().min(2, 'Minimum 2 caractères').required('Champ requis'),
+const FormCreateEmployee = ({ onSubmit, defaultValues = {} }) => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(createEmployeeSchemaYup),
+        defaultValues
     });
 
+    const handleFormSubmit = (data) => {
+        const employee = {
+            ...data,
+            dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0],
+        };
+        onSubmit(employee);
+        reset();
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="form-group">
                 <label htmlFor="first-name">First Name</label>
-                <input type="text" id="first-name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                />
+                <input id="first-name" {...register('firstName')} />
+                {errors.firstName && <p className="error">{errors.firstName.message}</p>}
             </div>
-
             <div className="form-group">
-                <label htmlFor="last-name">Last Name</label>
-                <input type="text" id="last-name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                />
+                <label htmlFor="last-name">Name</label>
+                <input id="last-name" {...register('lastName')} />
+                {errors.lastName && <p className="error">{errors.lastName.message}</p>}
             </div>
-
             <div className="form-group">
                 <label htmlFor="date-of-birth">Date of Birth</label>
-                <input id="date-of-birth" type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                />
+                <input id="date-of-birth" type="date" {...register('dateOfBirth')} />
+                {errors.dateOfBirth && <p className="error">{errors.dateOfBirth.message}</p>}
             </div>
-
             <div className="form-group">
                 <label htmlFor="start-date">Start Date</label>
-                <input id="start-date" type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                />
+                <input id="start-date" type="date" {...register('startDate')} />
+                {errors.startDate && <p className="error">{errors.startDate.message}</p>}
             </div>
-
             <fieldset className="address">
                 <legend>Address</legend>
-
                 <div className="form-group">
                     <label htmlFor="street">Street</label>
-                    <input
-                        id="street"
-                        type="text"
-                        required
-                        value={street}
-                        onChange={(e) => setStreet(e.target.value)}
-                    />
+                    <input id="street" {...register('street')} />
+                    {errors.street && <p className="error">{errors.street.message}</p>}
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="city">City</label>
-                    <input
-                        id="city"
-                        type="text"
-                        required
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                    />
+                    <input id="city" {...register('city')} />
+                    {errors.city && <p className="error">{errors.city.message}</p>}
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="state">State</label>
-                    <select
-                        id="state"
-                        required
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                    >
-                        {
-                            statesList.map((state) => (
-                                <option key={state.abbreviation}
-                                    value={state.name}
-                                >
-                                    {state.name}
-                                </option>
-                            ))
-                        }
+                    <select id="state" {...register('state')}>
+                        <option value="">-- Sélectionnez un état --</option>
+                        {statesList.map((state) => (
+                            <option key={state.abbreviation} value={state.name}>
+                                {state.name}
+                            </option>
+                        ))}
                     </select>
+                    {errors.state && <p className="error">{errors.state.message}</p>}
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="zipCode">Zip Code</label>
-                    <input
-                        id="zipCode"
-                        type="number"
-                        required
-                        value={zip}
-                        onChange={(e) => setZip(e.target.value)}
-                    />
+                    <input id="zipCode" type="text" {...register('zip')} />
+                    {errors.zip && <p className="error">{errors.zip.message}</p>}
                 </div>
             </fieldset>
-            <label htmlFor="department">Department</label>
-            <select name="department" id="department"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-            >
-                {
-                    departmentsList.map((dpt) => (
-                        <option key={dpt.label}
-                            value={dpt.value}
-                        >
+            <div className="form-group">
+                <label htmlFor="department">Department</label>
+                <select id="department" {...register('department')}>
+                    <option value="">-- Sélectionnez un département --</option>
+                    {departmentsList.map((dpt) => (
+                        <option key={dpt.label} value={dpt.value}>
                             {dpt.value}
                         </option>
-                    ))
-                }
-            </select>
+                    ))}
+                </select>
+                {errors.department && <p className="error">{errors.department.message}</p>}
+            </div>
+            <button type="submit">Save</button>
         </form>
-    )
-}
+    );
+};
 
 export default FormCreateEmployee;
